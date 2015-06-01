@@ -52,6 +52,20 @@ function ep_comments(context){
         "<style>.comment-changeTo-approve," +
                ".comment-reply-changeTo-approve{display:none;}</style>");
   }
+
+  if(clientVars.sandstormPermissions !== undefined){
+    // It appears this is the Sandstorm version of EtherPad. Check if the user
+    // has permission to comment.
+    if(clientVars.sandstormPermissions.indexOf("comment") === -1){
+      // The user does not have permission to comment. OK, hide the comment
+      // button and the ability to reply to comments.
+      $(document.head).contents().append(
+          "<style>.toolbar ul li.addComment{display:none;}</style>");
+      this.padInner.append(
+          "<style>.comment-reply-input,.reply-suggestion," +
+                 ".reply-comment-suggest{display:none;}</style>");
+    }
+  }
 }
 
 // Init Etherpad plugin comment pads
