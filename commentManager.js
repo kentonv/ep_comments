@@ -3,6 +3,8 @@ var db = require('ep_etherpad-lite/node/db/DB').db;
 var ERR = require("ep_etherpad-lite/node_modules/async-stacktrace");
 var randomString = require('ep_etherpad-lite/static/js/pad_utils').randomString;
 var readOnlyManager = require("ep_etherpad-lite/node/db/ReadOnlyManager.js");
+var sandstorm = require('ep_etherpad-lite/node/handler/SandstormHandler.js');
+var padManager = require("ep_etherpad-lite/node/db/PadManager");
 
 exports.getComments = function (padId, callback)
 {
@@ -26,12 +28,17 @@ exports.getComments = function (padId, callback)
   });
 };
 
-exports.addComment = function(padId, data, callback)
+exports.addComment = function(padId, sessionId, data, callback)
 {
   exports.bulkAddComments(padId, [data], function(err, commentIds, comments) {
     if(ERR(err, callback)) return;
 
     if(commentIds && commentIds.length > 0 && comments && comments.length > 0) {
+      // SANDSTORM EDIT
+      var path = "#comment/" + commentIds[0];
+      sandstorm.activity(sessionId, "comment", path, path, "comment: " + commentIds[0]);
+      // END SANDSTORM EDIT
+
       callback(null, commentIds[0], comments[0]);
     }
   });
@@ -102,11 +109,16 @@ exports.getCommentReplies = function (padId, callback){
 };
 
 
-exports.addCommentReply = function(padId, data, callback){
+exports.addCommentReply = function(padId, sessionId, data, callback){
   exports.bulkAddCommentReplies(padId, [data], function(err, replyIds, replies) {
     if(ERR(err, callback)) return;
 
     if(replyIds && replyIds.length > 0 && replies && replies.length > 0) {
+      // SANDSTORM EDIT
+      var path = "#comment/" + data.commentId;
+      sandstorm.activity(sessionId, "reply", path, path, "comment: " + data.commentId);
+      // END SANDSTORM EDIT
+
       callback(null, replyIds[0], replies[0]);
     }
   });

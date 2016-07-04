@@ -69,8 +69,10 @@ exports.socketio = function (hook_name, args, cb){
     // On add events
     socket.on('addComment', function (data, callback) {
       var padId = data.padId;
+      var sessionId = socket.handshake.headers['x-sandstorm-session-id'];  // SANDSTORM EDIT
       var content = data.comment;
-      commentManager.addComment(padId, content, function (err, commentId, comment){
+
+      commentManager.addComment(padId, sessionId, content, function (err, commentId, comment){
         socket.broadcast.to(padId).emit('pushAddComment', commentId, comment);
         callback(commentId, comment);
       });
@@ -96,13 +98,15 @@ exports.socketio = function (hook_name, args, cb){
 
     socket.on('addCommentReply', function (data, callback) {
       var padId = data.padId;
+      var sessionId = socket.handshake.headers['x-sandstorm-session-id'];  // SANDSTORM EDIT
       var content = data.reply;
       var changeTo = data.changeTo || null;
       var changeFrom = data.changeFrom || null;
       var changeAccepted = data.changeAccepted || null;
       var changeReverted = data.changeReverted || null;
       var commentId = data.commentId;
-      commentManager.addCommentReply(padId, data, function (err, replyId, reply, changeTo, changeFrom, changeAccepted, changeReverted){
+
+      commentManager.addCommentReply(padId, sessionId, data, function (err, replyId, reply, changeTo, changeFrom, changeAccepted, changeReverted){
         reply.replyId = replyId;
         socket.broadcast.to(padId).emit('pushAddCommentReply', replyId, reply, changeTo, changeFrom, changeAccepted, changeReverted);
         callback(replyId, reply);
