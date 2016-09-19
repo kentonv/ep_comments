@@ -36,7 +36,8 @@ exports.addComment = function(padId, sessionId, data, callback)
     if(commentIds && commentIds.length > 0 && comments && comments.length > 0) {
       // SANDSTORM EDIT
       var path = "#comment/" + commentIds[0];
-      sandstorm.activity(sessionId, "comment", path, path, "comment: " + commentIds[0]);
+      sandstorm.activity(sessionId, "comment", path, path, "comment: " + commentIds[0],
+                         comments[0].text);
       // END SANDSTORM EDIT
 
       callback(null, commentIds[0], comments[0]);
@@ -116,7 +117,8 @@ exports.addCommentReply = function(padId, sessionId, data, callback){
     if(replyIds && replyIds.length > 0 && replies && replies.length > 0) {
       // SANDSTORM EDIT
       var path = "#comment/" + data.commentId;
-      sandstorm.activity(sessionId, "reply", path, path, "comment: " + data.commentId);
+      sandstorm.activity(sessionId, "reply", path, path, "comment: " + data.commentId,
+                         replies[0].text);
       // END SANDSTORM EDIT
 
       callback(null, replyIds[0], replies[0]);
