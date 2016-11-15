@@ -86,6 +86,15 @@ ep_comments.prototype.init = function(){
       self.setComments(comments);
       self.collectComments();
     }
+
+    // Open the comment indicated in the URL.
+    var hash = document.location.hash;
+    if (hash != "") {
+      if (hash[0] == "#") hash = hash.slice(1);
+      if (hash.lastIndexOf("comment/", 0) === 0) {
+        commentBoxes.highlightComment(hash.slice(8));
+      }
+    }
   });
 
   this.getCommentReplies(function (replies){
@@ -439,25 +448,30 @@ ep_comments.prototype.collectComments = function(callback){
     // TODO this could potentially break ep_font_color
   });
 
-  // hover event
-  this.padInner.contents().on("mouseover", ".comment", function(e){
-    var commentId = self.commentIdOf(e);
+  // Click on sidebar comment opens it.
+  this.container.on("click", ".sidebar-comment", function(e){
+    commentBoxes.unhighlightOpenedComments();
+    var commentId = e.currentTarget.id;
     commentBoxes.highlightComment(commentId, e);
+    e.stopPropagation();
   });
 
-  // click event
+  // Click on comment subject text opens the sidebar comment.
   this.padInner.contents().on("click", ".comment", function(e){
+    commentBoxes.unhighlightOpenedComments();
     var commentId = self.commentIdOf(e);
     commentBoxes.highlightComment(commentId, e);
+    e.dontUnhighlightComments = true;
   });
 
-  this.padInner.contents().on("mouseleave", ".comment", function(e){
-    var commentOpenedByClickOnIcon = commentIcons.isCommentOpenedByClickOnIcon();
-
-    // only closes comment if it was not opened by a click on the icon
-    if (!commentOpenedByClickOnIcon) {
-      self.closeOpenedComment(e);
+  // Click anywhere else closes comments.
+  this.padInner.contents().on("click", function(e){
+    if (!e.dontUnhighlightComments) {
+      commentBoxes.unhighlightOpenedComments();
     }
+  });
+  this.padOuter.contents().on("click", function(e){
+    commentBoxes.unhighlightOpenedComments();
   });
 
   self.addListenersToCloseOpenedComment();

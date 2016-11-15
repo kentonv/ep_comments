@@ -48,13 +48,11 @@ time{
   font-weight:bold;
 }
 
-.sidebar-comment:hover .comment-delete-container,
 .sidebar-comment.mouseover .comment-delete-container{
   display:block;
 }
 
 .comment-modal .comment-text,
-.sidebar-comment:hover .comment-text,
 .sidebar-comment.mouseover .comment-text{
   height:auto;
   white-space:normal;
@@ -65,14 +63,19 @@ time{
   line-height:24px;
 }
 
-.sidebar-comment:hover,
+.sidebar-comment:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
 .sidebar-comment.mouseover{
   height:auto;
   white-space:normal;
   text-overflow:auto;
+  cursor: inherit;
+  background-color: white;
 }
 
-.sidebar-comment:hover .comment-reply-button,
 .sidebar-comment.mouseover .comment-reply-button {
   display:block;
 }

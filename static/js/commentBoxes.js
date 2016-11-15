@@ -39,9 +39,23 @@ var hideAllComments = function() {
   getCommentsContainer().children().hide();
 }
 
+var unhighlightOpenedComments = function() {
+  var container       = getCommentsContainer();
+  var commentsVisible = container.is(":visible");
+  if(commentsVisible) {
+    getCommentsContainer().find('.mouseover').removeClass('mouseover');
+  } else {
+    hideOpenedComments();
+  }
+
+  // Sandstorm: Set URL.
+  window.parent.postMessage({"setPath": "/"}, "*");
+}
+
 var highlightComment = function(commentId, e){
   var container       = getCommentsContainer();
   var commentElm      = container.find('#'+ commentId);
+  if (!commentElm) return;  // probably obsolete URL.
   var commentsVisible = container.is(":visible");
   if(commentsVisible) {
     // sidebar view highlight
@@ -66,6 +80,9 @@ var highlightComment = function(commentId, e){
       top: targetTop + 25 +"px"
     });
   }
+
+  // Sandstorm: Set URL.
+  window.parent.postMessage({"setPath": "/#comment/" + commentId}, "*");
 }
 
 // Adjust position of the comment detail on the container, to be on the same
@@ -98,6 +115,7 @@ exports.showComment = showComment;
 exports.hideComment = hideComment;
 exports.hideOpenedComments = hideOpenedComments;
 exports.hideAllComments = hideAllComments;
+exports.unhighlightOpenedComments = unhighlightOpenedComments;
 exports.highlightComment = highlightComment;
 exports.adjustTopOf = adjustTopOf;
 exports.isOnTop = isOnTop;
