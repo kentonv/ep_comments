@@ -72,16 +72,16 @@ var highlightComment = function(commentId, e){
 // height of the pad text associated to the comment, and return the affected element
 var adjustTopOf = function(commentId, baseTop) {
   var commentElement = getPadOuter().find('#'+commentId);
-  var targetTop = baseTop - 5;
+  var targetTop = baseTop + 5;
   commentElement.css("top", targetTop+"px");
 
   return commentElement;
 }
 
-// Indicates if comment is on the expected position (baseTop-5)
+// Indicates if comment is on the expected position (baseTop+5)
 var isOnTop = function(commentId, baseTop) {
   var commentElement = getPadOuter().find('#'+commentId);
-  var expectedTop = (baseTop - 5) + "px";
+  var expectedTop = (baseTop + 5) + "px";
   return commentElement.css("top") === expectedTop;
 }
 

@@ -329,7 +329,7 @@ time{
   }
 }
 /* #innerdocbody is inside of another iframe, so needs a new media query */
-@media (max-width: 947px) { /* 955 - 8 (8 is #innerdocbody left position) */
+@media (min-width: 893px) { /* 955 - 62 (62 is #innerdocbody left position) */
   #innerdocbody{
     margin-right:0px;
   }
@@ -339,11 +339,21 @@ time{
 @media (min-width: 955px) {
   #comments.active{
     display:block;
+    background-color: #eee;
+    border-left: 1px solid #ccc;
+    top: 0;
+    padding-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .outerBackground #comments.active {
+    background-color: transparent;
+    border-left: none;
   }
 }
 /* #innerdocbody is inside of another iframe, so needs a new media query */
-@media (min-width: 947px) { /* 955 - 8 (8 is #innerdocbody left position) */
-  #innerdocbody.comments:not(.innerPV){
+@media (min-width: 893px) { /* 955 - 62 (62 is #innerdocbody left position) */
+  #innerdocbody:not(.innerPV){
     margin-right:200px;
   }
 }
