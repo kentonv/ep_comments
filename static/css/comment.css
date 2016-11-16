@@ -312,6 +312,8 @@ time{
   width:0px;
   z-index:1000;
   font-size:12px;
+  background-color: white;
+  cursor: inherit;
 }
 
 #outerdocbody{
