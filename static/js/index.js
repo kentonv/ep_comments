@@ -450,15 +450,15 @@ ep_comments.prototype.collectComments = function(callback){
 
   // Click on sidebar comment opens it.
   this.container.on("click", ".sidebar-comment", function(e){
-    commentBoxes.unhighlightOpenedComments();
     var commentId = e.currentTarget.id;
+    commentBoxes.unhighlightOpenedComments(commentId);
     commentBoxes.highlightComment(commentId, e);
     e.stopPropagation();
   });
 
   // Click on comment subject text opens the sidebar comment.
   this.padInner.contents().on("click", ".comment", function(e){
-    commentBoxes.unhighlightOpenedComments();
+    commentBoxes.unhighlightOpenedComments(commentId);
     var commentId = self.commentIdOf(e);
     commentBoxes.highlightComment(commentId, e);
     e.dontUnhighlightComments = true;

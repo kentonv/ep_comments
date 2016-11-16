@@ -39,11 +39,15 @@ var hideAllComments = function() {
   getCommentsContainer().children().hide();
 }
 
-var unhighlightOpenedComments = function() {
+var unhighlightOpenedComments = function(exceptFor) {
   var container       = getCommentsContainer();
   var commentsVisible = container.is(":visible");
   if(commentsVisible) {
-    getCommentsContainer().find('.mouseover').removeClass('mouseover');
+    var items = getCommentsContainer().find('.mouseover');
+    if (exceptFor) {
+      items = items.filter(function (index, elem) { return elem.id !== exceptFor; });
+    }
+    items.removeClass('mouseover');
   } else {
     hideOpenedComments();
   }
